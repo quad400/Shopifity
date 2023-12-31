@@ -17,8 +17,9 @@ const Footer = () => {
           </div>
           <div className="w-2/4 bg-white py-1 px-1 rounded-md flex justify-between items-center">
             <input
+            
               placeholder="Your Email..."
-              type="text"
+              type="email"
               className="w-full text-sm outline-none text-black font-medium"
             />
             <button

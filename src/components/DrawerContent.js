@@ -1,9 +1,14 @@
 import React from "react";
 import { cart } from "../constants/Data";
 import { Divider } from "antd";
-import { Link } from "react-router-dom";
+import Button from "./Button";
 
-const DrawerContent = () => {
+const DrawerContent = ({ setShowDrawer }) => {
+
+  const handleClick = () => {
+    setShowDrawer(false);
+  };
+
   return (
     <div className="mt-3">
       {cart.map((item) => {
@@ -40,8 +45,8 @@ const DrawerContent = () => {
         </div>
         <Divider />
         <div className="flex justify-center items-center space-x-2 mt-3">
-          <Link className="text-xs hover:text-black text-black font-medium bg-tertiary mt-3 px-5 py-2 rounded-2xl">View Cart</Link>
-          <Link className="text-xs hover:text-black text-black font-medium bg-tertiary mt-3 px-5 py-2 rounded-2xl">Check Out</Link>
+          <Button title="View Cart" to="/cart" onClick={handleClick} />
+          <Button title="Check out" to="/checkout" onClick={handleClick} />
         </div>
       </div>
     </div>

@@ -2,11 +2,14 @@ import { Rating } from "@mui/material";
 import React from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { calculateDiscount } from "../utils";
+import { Naira, calculateDiscount } from "../utils";
 
 const ProductCard2 = ({ item }) => {
   return (
-    <Link className="bg-white rounded-md shadow-lg w-[220px] p-3">
+    <Link
+      to={`/products/${item.id}`}
+      className="bg-white rounded-md shadow-lg p-3"
+    >
       <div className="flex justify-between items-center">
         {item?.discount_percent ? (
           <span className="bg-amber-600 py-1 px-2 rounded-lg text-xs font-bold">
@@ -19,11 +22,13 @@ const ProductCard2 = ({ item }) => {
           {item.favourite ? <FaHeart /> : <FaRegHeart />}
         </button>
       </div>
-      <img
-        src={item.image}
-        className="h-[120px] w-[120px] my-2"
-        alt={item.id}
-      />
+      <div className="flex justify-center items-center">
+        <img
+          src={item.image}
+          className="h-[120px] w-[120px] my-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+          alt={item.id}
+        />
+      </div>
       <div>
         <p className="text-[10px] font-semibold text-red-700 mb-3">
           {item.brand}
@@ -35,14 +40,18 @@ const ProductCard2 = ({ item }) => {
         {item.discount_percent ? (
           <>
             <span className="text-red-800 font-semibold text-sm">
-              ${calculateDiscount(item.price, item.discount_percent)}
+              {Naira.format(
+                calculateDiscount(item.price, item.discount_percent)
+              )}
             </span>
             <del className="font-medium text-gray-700 ml-2 text-xs">
-              ${item.price}
+              {Naira.format(item.price)}
             </del>
           </>
         ) : (
-          <span className="font-semibold text-sm">${item.price}</span>
+          <span className="font-semibold text-sm">
+            {Naira.format(item.price)}
+          </span>
         )}
       </div>
     </Link>

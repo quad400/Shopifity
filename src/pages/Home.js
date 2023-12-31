@@ -6,12 +6,18 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Rating } from "@mui/material";
 import ProductCard from "../components/ProductCard";
 import { calculateDiscount } from "../utils";
+import Marquee from "react-fast-marquee";
+
 import {
+  blog,
   categoryList,
   featureCollectionData,
   soloFeatureData,
   specialProduct,
 } from "../constants/Data";
+import { Carousel } from "antd";
+import Button from "../components/Button";
+import BlogCard from "../components/BlogCard";
 
 const smallbannerdata = [
   {
@@ -92,88 +98,76 @@ const brand = [
   require("../assets/images/brand-08.png"),
 ];
 
-const blog = [
-  {
-    id: 1,
-    image: require("../assets/images/blog-1.jpg"),
-    date: "11 JUNE, 2023",
-    title: "How to increase the sales of yougurt within a week",
-    detail:
-      "You are only as good as your last collection, which is an Enormous pressure. IThink is Something About begin to make sense",
-  },
-  {
-    id: 2,
-    image: require("../assets/images/blog-1.jpg"),
-    date: "11 JUNE, 2023",
-    title: "How to increase the sales of yougurt within a week",
-    detail:
-      "You are only as good as your last collection, which is an Enormous pressure. IThink is Something About begin to make sense",
-  },
-  {
-    id: 3,
-    image: require("../assets/images/blog-1.jpg"),
-    date: "11 JUNE, 2023",
-    title: "How to increase the sales of yougurt within a week",
-    detail:
-      "You are only as good as your last collection, which is an Enormous pressure. IThink is Something About begin to make sense",
-  },
-  {
-    id: 4,
-    image: require("../assets/images/blog-1.jpg"),
-    date: "11 JUNE, 2023",
-    title: "How to increase the sales of yougurt within a week",
-    detail:
-      "You are only as good as your last collection, which is an Enormous pressure. IThink is Something About begin to make sense",
-  },
-];
-
 const Home = () => {
   return (
     <section className="bg-white w-full  pt-3">
-      <div className="flex w-full px-16">
-        <div className="w-[50%] relative ">
-          <img
-            src={require("../assets/images/main-banner-1.jpg")}
-            alt="banner-1"
-            className="h-[350px] w-full relative rounded-md"
-          />
-          <div className="absolute top-7 left-4">
-            <p className="text-orange-700 text-sm font-semibold">
-              SUPERCHARGED PODS
-            </p>
-            <p className="text-4xl my-4 font-bold">Special Sale</p>
-            <p className="text-xs font-medium">
-              From $99.90 to $50.00/mo. <br /> for 24 mo. Footnote{" "}
-            </p>
-            <div className="mt-4">
-              <Link className="bg-primary px-4 text-white text-sm font-medium mt-3 py-2 rounded-lg">
-                BUY NOW
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="w-[50%] ml-2 grid grid-rows-2 grid-cols-2 gap-2">
-          {smallbannerdata.map((item) => {
-            return (
-              <div className="relative" key={item.id}>
+      <div className="w-full px-16">
+        <div className="flex w-full justify-between items-center">
+          <div className="w-[50%]">
+            <Carousel autoplay>
+              <div className="w-[50%] relative">
                 <img
-                  src={item.image}
-                  alt={item.id}
-                  className="w-full relative h-[170px] rounded-md"
+                  src={require("../assets/images/main-banner-1.jpg")}
+                  alt="banner-1"
+                  className="h-[350px] w-full relative rounded-md"
                 />
                 <div className="absolute top-7 left-4">
                   <p className="text-orange-700 text-sm font-semibold">
-                    {item.label}
+                    SUPERCHARGED PODS
                   </p>
-                  <p className="text-xl my-2 font-bold">{item.name}</p>
+                  <p className="text-4xl my-4 font-bold">Special Sale</p>
                   <p className="text-xs font-medium">
-                    {item.text1}
-                    <br /> {item.text2}
+                    From $99.90 to $50.00/mo. <br /> for 24 mo. Footnote{" "}
                   </p>
+                  <div className="mt-4">
+                    <Button title="BUY NOW" />
+                  </div>
                 </div>
               </div>
-            );
-          })}
+              <div className="w-[50%] relative">
+                <img
+                  src={require("../assets/images/main-banner.jpg")}
+                  alt="banner-1"
+                  className="h-[350px] w-full relative rounded-md"
+                />
+                <div className="absolute top-7 left-4">
+                  <p className="text-orange-700 text-sm font-semibold">
+                    SUPERCHARGED PODS
+                  </p>
+                  <p className="text-4xl my-4 font-bold">Special Sale</p>
+                  <p className="text-xs font-medium">
+                    From $99.90 to $50.00/mo. <br /> for 24 mo. Footnote{" "}
+                  </p>
+                  <div className="mt-4">
+                    <Button title="BUY NOW" />
+                  </div>
+                </div>
+              </div>
+            </Carousel>
+          </div>
+          <div className="w-[50%] ml-2 grid grid-rows-2 grid-cols-2 gap-2">
+            {smallbannerdata.map((item) => {
+              return (
+                <div className="relative" key={item.id}>
+                  <img
+                    src={item.image}
+                    alt={item.id}
+                    className="w-full relative h-[170px] rounded-md"
+                  />
+                  <div className="absolute top-7 left-4">
+                    <p className="text-orange-700 text-sm font-semibold">
+                      {item.label}
+                    </p>
+                    <p className="text-xl my-2 font-bold">{item.name}</p>
+                    <p className="text-xs font-medium">
+                      {item.text1}
+                      <br /> {item.text2}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="px-16 mt-5 bg-gray-100">
@@ -221,13 +215,13 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex justify-between mt-14 items-center">
+        <div className="grid grid-cols-4 gap-3 mt-14">
           {soloFeatureData.map((item) => {
             return (
               <img
                 src={item.image}
                 alt={item.id}
-                className="h-[200px] w-[230px] rounded-md"
+                className="rounded-md"
               />
             );
           })}
@@ -338,9 +332,7 @@ const Home = () => {
                         Product: {item.sold}/ {item.available}
                       </p>
                       <div className="mt-2">
-                        <Link className="text-xs text-white font-medium bg-primary px-3 py-2 rounded-2xl">
-                          OPTION
-                        </Link>
+                      <Button title="OPTION" />
                       </div>
                     </div>
                   </div>
@@ -364,11 +356,13 @@ const Home = () => {
             })}
           </div>
         </div>
-        <div className="bg-white mt-8 flex py-4 px-2 justify-between items-center shadow-lg">
-          {brand.map((item, index) => {
-            return <img src={item} alt={index} className="h-24 w-24" />;
-          })}
-        </div>
+        <Marquee>
+          <div className="bg-white mt-8 space-x-10 px-2 flex py-4 justify-between items-center">
+            {brand.map((item, index) => {
+              return <img src={item} alt={index} className="h-24 w-24" />;
+            })}
+          </div>
+        </Marquee>
 
         <div className="my-8">
           <div className="flex justify-between items-center mb-6">
@@ -381,25 +375,7 @@ const Home = () => {
           <div className="flex gap-2 justify-between items-center">
             {blog.map((item, index) => {
               return (
-                <div className="rounded-md shadow-lg">
-                  <img src={item.image} alt={item.id} className="" />
-                  <div className="py-4 px-3 bg-white">
-                    <p className="text-gray-300 text-xs font-medium">
-                      {item.date}
-                    </p>
-                    <h4 className="text-sm font-bold  line-clamp-1">
-                      {item.title}
-                    </h4>
-                    <p className="text-gray-300 text-xs font-medium line-clamp-2">
-                      {item.detail}
-                    </p>
-                    <div className="mt-2">
-                      <Link className="text-xs text-white font-medium bg-primary px-3 py-2 rounded-2xl">
-                        READ MORE
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <BlogCard item={item} />
               );
             })}
           </div>

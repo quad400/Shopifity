@@ -6,8 +6,64 @@ import { TiShoppingCart } from "react-icons/ti";
 import { CgMenuGridR } from "react-icons/cg";
 import { MdArrowDropDown } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { Drawer } from "antd";
+import { Drawer, Dropdown } from "antd";
 import DrawerContent from "./DrawerContent";
+import { Naira } from "../utils";
+
+const account = [
+  {
+    key: "1",
+    label: (
+      <a href="/login">Login</a>
+    )
+  },
+  {
+    key: "2",
+    label: (
+      <a href="/register">Register</a>
+    )
+  },
+]
+
+
+const items = [
+  {
+    key: "1",
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        1st menu item
+      </a>
+    ),
+  },
+  {
+    key: "2",
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.aliyun.com"
+      >
+        2nd menu item
+      </a>
+    ),
+  },
+  {
+    key: "3",
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.luohanacademy.com"
+      >
+        3rd menu item
+      </a>
+    ),
+  },
+];
 
 const Header = () => {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -24,7 +80,7 @@ const Header = () => {
           </p>
         </div>
         <div className="bg-secondary px-16 py-4 justify-between items-center flex">
-          <h5 className="text-white text-3xl font-semibold">Shopifity.</h5>
+          <Link className="text-white text-3xl font-semibold" to="/">Shopifity.</Link>
           <div className="w-2/5 bg-white flex justify-between items-center rounded-sm">
             <input
               type="text"
@@ -47,33 +103,49 @@ const Header = () => {
                 </p>
               </Link>
             </li>
-            <li className="flex items-center justify-between">
-              <FaRegUser color="#c99608" size={30} />
-              <Link to="login">
-                <p className="text-white text-sm ml-2">
-                  Log in <br /> My Account
-                </p>
-              </Link>
-            </li>
+            <Dropdown
+              menu={{
+                items:account
+              }}
+              placement="bottom"
+              arrow
+            >
+              <li className="flex items-center justify-between">
+                <FaRegUser color="#c99608" size={30} />
+                <Link>
+                  <p className="text-white text-sm ml-2">
+                    Log in <br /> My Account
+                  </p>
+                </Link>
+              </li>
+            </Dropdown>
             <li className="flex items-center justify-between">
               <TiShoppingCart color="#c99608" size={40} />
               <Link onClick={() => setShowDrawer(true)}>
                 <div className=" ml-2">
                   <span className="px-1 rounded-sm text-xs bg-white">0</span>
-                  <br /> <p className="text-white text-xs">$30.00</p>
+                  <br /> <p className="text-white text-xs">{Naira.format(30.90)}</p>
                 </div>
               </Link>
             </li>
           </div>
         </div>
         <div className="flex bg-primary2 px-16 py-2 justify-start items-center">
-          <Link className="flex items-center justify-center">
-            <CgMenuGridR color="white" size={20} />
-            <p className="text-white text-sm ml-2 font-semibold mr-6">
-              SHOP CARTEGORIES
-            </p>
-            <MdArrowDropDown color="white" />
-          </Link>
+          <Dropdown
+            menu={{
+              items,
+            }}
+            placement="bottom"
+            arrow
+          >
+            <Link className="flex items-center justify-center">
+              <CgMenuGridR color="white" size={20} />
+              <p className="text-white text-sm ml-2 font-semibold mr-6">
+                SHOP CARTEGORIES
+              </p>
+              <MdArrowDropDown color="white" />
+            </Link>
+          </Dropdown>
           <ul className="flex ml-6">
             <li>
               <Link to="/" className="mx-3 font-semibold text-white text-sm">
@@ -82,27 +154,37 @@ const Header = () => {
             </li>
             <li>
               <Link
-                to="/ourstore"
+                to="/products"
                 className="mx-3 font-semibold text-white text-sm"
               >
                 OUR STORE
               </Link>
             </li>
             <li>
-              <Link className="mx-3 font-semibold text-white text-sm">
+              <Link
+                to="/blogs"
+                className="mx-3 font-semibold text-white text-sm"
+              >
                 BLOGS
               </Link>
             </li>
             <li>
-              <Link className="mx-3 font-semibold text-white text-sm">
+              <Link
+                to="/contact"
+                className="mx-3 font-semibold text-white text-sm"
+              >
                 CONTACT
               </Link>
             </li>
           </ul>
         </div>
       </header>
-      <Drawer title="Shopping Cart" onClose={() => setShowDrawer(false)} open={showDrawer}>
-        <DrawerContent />
+      <Drawer
+        title="Shopping Cart"
+        onClose={() => setShowDrawer(false)}
+        open={showDrawer}
+      >
+        <DrawerContent setShowDrawer={setShowDrawer} />
       </Drawer>
     </>
   );
