@@ -2,9 +2,24 @@ import { useFormik } from "formik";
 import React from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { register } from "../features";
+import { message } from "antd";
 
 const Register = () => {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
+
+  const handleSubmit = (data) => {
+    register(data)
+      .then((res) => {
+        if (res.status === 201 || res.status === 200) {
+          message.success({ content: "Successfully created account" });
+          return;
+        }
+      })
+      .catch((error) => {
+        message.error({ content: "User with this email already exists" });
+      });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -25,12 +40,9 @@ const Register = () => {
         .min(6, "Password must be more than 6 characters")
         .matches(passwordRules, {
           message: "Please create a stronger password",
-        })
-        .required("Required"),
+        }),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    onSubmit: handleSubmit,
   });
 
   return (
@@ -40,9 +52,7 @@ const Register = () => {
           <h4 className="text-md font-semibold mb-3 text-gray-500">
             Create Account
           </h4>
-          <form
-            onSubmit={formik.handleSubmit}
-          >
+          <form onSubmit={formik.handleSubmit}>
             <div className="w-full">
               {formik.touched.firstName && formik.errors.firstName ? (
                 <div className="text-xs text-red-700 mb-1">
@@ -105,6 +115,7 @@ const Register = () => {
             <div className="flex justify-center items-center">
               <button
                 type="submit"
+                onSubmit={formik.handleSubmit}
                 className="text-xs flex justify-center items-center text-white font-medium bg-primary mt-3 px-5 py-2 rounded-2xl"
               >
                 Create

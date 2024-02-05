@@ -1,12 +1,14 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import countryList from "react-select-country-list";
-import { cart } from "../constants/Data";
 import { Naira } from "../utils";
 import { Divider } from "antd";
+import { useSelector } from "react-redux";
 
 const Checkout = () => {
   const options = useMemo(() => countryList().getData(), []);
+
+  const { cart } = useSelector((state) => state.product);
 
   return (
     <div className="bg-white w-full h-full">
@@ -67,7 +69,7 @@ const Checkout = () => {
               />
             </div>
             <div className="flex justify-between items-center mt-4">
-              <Link className="text-xs hover:bg-tertiary hover:text-black transition-all ease-in-out delay-75 text-white font-medium bg-primary px-3 py-2 rounded-2xl uppercase">
+              <Link to="/cart" className="text-xs hover:bg-tertiary hover:text-black transition-all ease-in-out delay-75 text-white font-medium bg-primary px-3 py-2 rounded-2xl uppercase">
                 Return to cart
               </Link>
               <Link className="text-xs hover:bg-tertiary hover:text-black transition-all ease-in-out delay-75 text-white font-medium bg-red-800 px-6 py-4 rounded-2xl uppercase">
@@ -77,28 +79,30 @@ const Checkout = () => {
           </div>
 
           <div>
-            {cart.map((item) => {
+            {cart?.products.map((item) => {
               return (
                 <div className="w-full flex p-2 justify-between mb-2 space-x-2 items-start">
                   <div className="w-[10%] ring-1 rounded-md relative ring-gray-300">
                     <img
-                      src={item.images[0].image}
-                      alt={item.id}
+                      src={item?.product.images[0]}
+                      alt={item?.product?._id}
                       className="w-full h-full rounded-md"
                     />
                     <span className="text-[8px] absolute font-normal text-white rounded-full px-1.5 py-0.5 bg-gray-700 ring-2 ring-white -top-2 -right-2">
-                      3
+                      {item?.quantity}
                     </span>
                   </div>
                   <div className="w-[90%] flex justify-between items-center">
                     <div className="w-[80%]">
-                      <h4 className="text-xs font-semibold">{item.name}</h4>
+                      <h4 className="text-xs font-semibold">
+                        {item?.product?.title}
+                      </h4>
                       <p className="text-[10px] text-gray-400">
-                        {item.size} / {item.color}
+                        {item?.size} / {item?.color}
                       </p>
                     </div>
                     <p className="text-black font-semibold text-xs">
-                      {Naira.format(item.price)}
+                      {Naira.format(item?.product?.price)}
                     </p>
                   </div>
                 </div>
@@ -109,7 +113,7 @@ const Checkout = () => {
               <div className="flex justify-between items-center">
                 <p className="text-xs font-medium text-gray-400">Subtotal</p>
                 <p className="text-xs font-semibold text-gray-600">
-                  {Naira.format(300.0)}
+                  {Naira.format(cart?.cartTotal)}
                 </p>
               </div>
               <div className="flex justify-between mt-2 items-center">
@@ -123,7 +127,7 @@ const Checkout = () => {
             <div className="flex justify-between items-center">
               <p className="text-xs font-semibold text-gray-600">Total</p>
               <p className="text-lg font-bold text-gray-600">
-                {Naira.format(400.0)}
+                {Naira.format(cart?.cartTotal + 100)}
               </p>
             </div>
           </div>

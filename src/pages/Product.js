@@ -1,22 +1,69 @@
-import React, { useState } from "react";
-// import { useParams } from "react-router-dom";
-import { featureCollectionData, product } from "../constants/Data";
+import React, { useEffect, useState } from "react";
+import { featureCollectionData } from "../constants/Data";
 import { Rating } from "@mui/material";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { Divider } from "antd";
+import { Divider, message } from "antd";
 import ProductCard from "../components/ProductCard";
-import { Naira } from "../utils";
+import { Naira, dateConverter } from "../utils";
+import { useDispatch, useSelector } from "react-redux";
+import { AddtoCart, GetCart, GetProduct } from "../features/productSlice";
 
 const Product = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
   const [showReview, setShowReview] = useState(false);
   const [rate, setRate] = useState(0);
   const [comment, setComment] = useState("");
 
-  const data = product;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(GetProduct(id));
+  }, [dispatch, id]);
+
+  const { product,wishlist } = useSelector((state) => state.product);
+
+  // cart
+  const [size, setSize] = useState(null);
+  const [color, setColor] = useState(null);
+  const [qty, setQty] = useState(1);
+
+  useEffect(() => {
+    setColor(product?.colors[0]);
+    setSize(product?.sizes[0]);
+  }, [product, setColor, setSize]);
+
+  function handleAddToCart() {
+    const body = {
+      productId: id,
+      quantity: qty,
+      color: color,
+      size: size,
+    };
+
+    console.log("click");
+
+    dispatch(AddtoCart(body));
+    dispatch(GetCart())
+  }
+
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(()=> {
+  if (wishlist.length === 0) {
+    return;
+  } else {
+    wishlist?.find((item) => {
+      if (item._id.toString() === item?._id.toString()) {
+        setIsFav(true);
+        console.log("caller")
+      } else {
+        setIsFav(false);
+      }
+    });
+  }
+  },[])
 
   return (
     <div className="bg-white w-full h-full">
@@ -24,17 +71,17 @@ const Product = () => {
         <div className="shadow-lg my-5 grid grid-cols-2 gap-6 p-3 bg-white rounded-md">
           <div className="">
             <img
-              src={data.images[0].image}
-              alt={data.id}
+              src={product?.images[0]}
+              alt={product?.id}
               className="w-full h-[350px]"
             />
             <div className="flex mt-3 space-x-2 justify-center items-center">
-              {product.images.map((item) => {
+              {product?.images.map((item, index) => {
                 return (
                   <div className="h-20 ring-black w-20 ring-1 rounded-md">
                     <img
-                      src={item.image}
-                      alt={item.id}
+                      src={item}
+                      alt={index}
                       className="w-full h-full rounded-md"
                     />
                   </div>
@@ -43,43 +90,55 @@ const Product = () => {
             </div>
           </div>
           <div className="">
-            <h4 className="text-lg font-bold my-2">{data.name}</h4>
+            <h4 className="text-lg font-bold my-2">{product?.title}</h4>
             <h4 className="text-lg font-bold my-2">
-              {Naira.format(data.price)}
+              {Naira.format(product?.price)}
             </h4>
-            <Rating name="read-only" value={data.rate} readOnly size="small" />
+            <Rating
+              name="read-only"
+              value={product?.averageRating}
+              readOnly
+              size="small"
+            />
             <div className="flex mt-2 justify-normal items-center">
               <strong className="text-sm mr-3">Type: </strong>
               <span className="text-sm">Headsets</span>
             </div>
             <div className="flex mt-2 justify-normal items-center">
               <strong className="text-sm mr-3">Availability: </strong>
-              <span className="text-sm">40 In Stock</span>
+              <span className="text-sm">{product?.quantity} In Stock</span>
             </div>
             <div className="flex mt-2 justify-normal items-center">
               <strong className="text-sm mr-3">Size: </strong>
               <div className="flex justify-normal space-x-2 items-center">
-                <span className="text-sm px-2 py-1 border border-gray-700 rounded-md">
-                  S
-                </span>
-                <span className="text-sm bg-primary text-white px-2 py-1 border border-gray-700 rounded-md">
-                  M
-                </span>
-                <span className="text-sm px-2 py-1 border border-gray-700 rounded-md">
-                  L
-                </span>
-                <span className="text-sm px-2 py-1 border border-gray-700 rounded-md">
-                  XLL
-                </span>
+                {product?.sizes?.map((item) => (
+                  <button
+                    onClick={() => setSize(item)}
+                    className={`text-sm px-2 py-1 border border-gray-700 rounded-md ${
+                      item === size ? "bg-blue-950 text-white" : ""
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="flex mt-2 justify-normal items-center">
               <strong className="text-sm mr-3">Color: </strong>
+
               <div className="flex justify-normal space-x-2 items-center">
-                <button className="text-sm shadow-lg h-6 w-6 ring-offset-2 ring-black ring-1 rounded-full border m-1 border-gray-700 bg-red-900" />
+                {product?.colors?.map((item) => (
+                  <button
+                    onClick={() => setColor(item)}
+                    className={`text-sm shadow-lg h-6 w-6 rounded-full border m-1 ${
+                      item === color ? "ring-offset-2 ring-black ring-1" : ""
+                    }`}
+                    style={{
+                      backgroundColor: item,
+                    }}
+                  />
+                ))}
               </div>
-              <button className="text-sm shadow-lg h-6 w-6 rounded-full border m-1 border-gray-700 bg-green-900" />
-              <button className="text-sm shadow-lg h-6 w-6 rounded-full border m-1 border-gray-700 bg-green-900" />
             </div>
 
             <div className="flex space-x-2 mt-3">
@@ -89,12 +148,14 @@ const Product = () => {
                 name="qty"
                 min={1}
                 max={99}
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
                 defaultValue={1}
                 className="ring-1 px-1 text-sm ring-offset-2 ring-gray-400 outline-none w-10 rounded-sm"
               />
             </div>
             <div className="flex space-x-2 mt-5">
-              <Button title="Add to Cart" />
+              <Button onClick={handleAddToCart} title="Add to Cart" />
               <Link className="text-xs hover:bg-primary hover:text-white transition-all ease-in-out delay-75 text-black font-medium bg-tertiary px-3 py-2 rounded-2xl uppercase">
                 Buy now
               </Link>
@@ -105,7 +166,9 @@ const Product = () => {
         </div>
         <h4 className="font-bold text-lg mb-2 text-black">Description</h4>
         <div className="shadow-lg my-5 p-4 bg-white rounded-md">
-          <p className="text-sm font-normal text-black">{data.description}</p>
+          <p className="text-sm font-normal text-black">
+            {product?.description}
+          </p>
         </div>
 
         <h4 className="font-bold text-lg mb-2 text-black">Reviews</h4>
@@ -117,12 +180,12 @@ const Product = () => {
             <div className="flex justify-normal items-center space-x-2">
               <Rating
                 name="read-only"
-                value={data.rate}
+                value={product?.averateRating}
                 readOnly
                 size="small"
               />
               <p className="font-light text-gray-400 text-xs">
-                Based on 2 reviews
+                Based on {product?.totalRating} reviews
               </p>
             </div>
             <Link
@@ -155,33 +218,33 @@ const Product = () => {
                   className="rounded-md p-2 my-2 outline-none text-sm font-normal text-gray-600 ring-1 ring-gray-400"
                 />
               </div>
-                <Button title="Submit" />
+              <Button title="Submit" />
             </>
           )}
 
           <Divider />
           <div>
-            {data.reviews.map((item) => {
+            {product?.ratings.map((item) => {
               return (
                 <>
                   <div className="mt-2">
                     <Rating
                       name="read-only"
-                      value={item.rate}
+                      value={item.star}
                       readOnly
                       size="small"
                     />
                     <div className="flex space-x-2 justify-normal items-center">
                       <p className="text-sm font-bold text-black">
-                        {item.name}
+                        {item?.postedBy?.name}
                       </p>
                       <p className="text-sm font-thin text-black"> on </p>
                       <p className="text-sm font-bold text-black">
-                        {item.date}
+                        {dateConverter(item?.createdAt)}
                       </p>
                     </div>
                     <p className="text-sm font-medium mt-2 text-gray-500">
-                      {item.comment}
+                      {item?.comment}
                     </p>
                   </div>
                   <Divider />
@@ -192,7 +255,7 @@ const Product = () => {
         </div>
         <h4 className="font-bold text-lg mb-2 text-black">You May Also Like</h4>
         <div className="flex gap-2">
-          {featureCollectionData.map((item) => {
+          {featureCollectionData?.map((item) => {
             return <ProductCard item={item} />;
           })}
         </div>

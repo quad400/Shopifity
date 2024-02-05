@@ -1,16 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Colors } from "../constants/Colors";
-import { FaChevronDown, FaGalacticSenate, FaGripLinesVertical } from "react-icons/fa6";
-import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
+import {
+  FaChevronDown,
+  FaGalacticSenate,
+  FaGripLinesVertical,
+} from "react-icons/fa6";
+import { RxDragHandleHorizontal } from "react-icons/rx";
 import { featureCollectionData } from "../constants/Data";
 import ProductCard2 from "../components/ProductCard2";
 import { Pagination } from "antd";
 import ProductHorizontalCard from "../components/ProductHorizontalCard";
+import { useDispatch, useSelector } from "react-redux";
+import { ProductList } from "../features/productSlice";
 
 const OurStore = () => {
   const [isHorizontal, setIsHorizontal] = useState(FaGalacticSenate);
-
+  const [page, setPage] = useState(1);
   const handleClickHorizontal = () => {
     setIsHorizontal(true);
   };
@@ -19,11 +24,35 @@ const OurStore = () => {
     setIsHorizontal(false);
   };
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ProductList(page));
+  }, [dispatch]);
+
+  const { products, wishlist } = useSelector((state) => state.product);
+
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(()=> {
+  if (wishlist.length === 0) {
+    return;
+  } else {
+    wishlist?.find((item) => {
+      if (item._id.toString() === item?._id.toString()) {
+        setIsFav(true);
+        console.log("caller")
+      } else {
+        setIsFav(false);
+      }
+    });
+  }
+  },[])
+
   return (
     <div className="bg-white w-full h-full">
       <div className="bg-gray-100 py-4 flex space-x-2 px-16">
         <div className="w-[20%] space-y-2">
-  
           <ul className="rounded-md shadow-lg bg-white p-2.5 mb-2">
             <h4 className="mb-5 text-sm font-semibold">Filter By</h4>
             <h5 className="font-semibold text-xs mb-1.5">Availability</h5>
@@ -148,20 +177,22 @@ const OurStore = () => {
               isHorizontal ? "grid-cols-1" : "grid-cols-3 gap-x-2"
             } gap-2 mt-8`}
           >
-            {featureCollectionData.map((item) => {
-              return isHorizontal ? (
-                <ProductHorizontalCard item={item} />
+            {products.map((item) => {
+              return(
+              isHorizontal ? (
+                <ProductHorizontalCard isFav={isFav} item={item} />
               ) : (
                 <ProductCard2 item={item} />
-              );
-            })}
+              )
+            )})}
           </div>
 
           <div className="bg-white mt-6 shadow-lg flex justify-between p-1.5 rounded-md items-center">
             <Pagination
-              showQuickJumper
-              defaultCurrent={2}
-              total={500}
+              hideOnSinglePage={true}
+              totalBoundaryShowSizeChanger={40}
+              defaultCurrent={1}
+              total={11}
               onChange={(page) => {
                 console.log(page);
               }}

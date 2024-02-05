@@ -7,7 +7,7 @@ import { Naira, calculateDiscount } from "../utils";
 const ProductCard2 = ({ item }) => {
   return (
     <Link
-      to={`/products/${item.id}`}
+      to={`/products/${item._id}`}
       className="bg-white rounded-md shadow-lg p-3"
     >
       <div className="flex justify-between items-center">
@@ -24,33 +24,33 @@ const ProductCard2 = ({ item }) => {
       </div>
       <div className="flex justify-center items-center">
         <img
-          src={item.image}
+          src={item?.images[0]}
           className="h-[120px] w-[120px] my-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
-          alt={item.id}
+          alt={item?._id}
         />
       </div>
       <div>
         <p className="text-[10px] font-semibold text-red-700 mb-3">
-          {item.brand}
+          Shopifity
         </p>
-        <p className="text-xs font-bold mb-3 line-clamp-2">{item.name}</p>
+        <p className="text-xs font-bold mb-3 line-clamp-2">{item?.title}</p>
       </div>
-      <Rating name="read-only" value={item.rate} readOnly size="small" />
+      <Rating name="read-only" value={item?.averageRating} readOnly size="small" />
       <div>
-        {item.discount_percent ? (
+        {item?.discount_percent ? (
           <>
             <span className="text-red-800 font-semibold text-sm">
               {Naira.format(
-                calculateDiscount(item.price, item.discount_percent)
+                calculateDiscount(item?.price, item?.discount_percent)
               )}
             </span>
             <del className="font-medium text-gray-700 ml-2 text-xs">
-              {Naira.format(item.price)}
+              {Naira.format(item?.price)}
             </del>
           </>
         ) : (
           <span className="font-semibold text-sm">
-            {Naira.format(item.price)}
+            {Naira.format(item?.price)}
           </span>
         )}
       </div>

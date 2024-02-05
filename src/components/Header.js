@@ -9,22 +9,18 @@ import { Link } from "react-router-dom";
 import { Drawer, Dropdown } from "antd";
 import DrawerContent from "./DrawerContent";
 import { Naira } from "../utils";
+import { useSelector } from "react-redux";
 
 const account = [
   {
     key: "1",
-    label: (
-      <a href="/login">Login</a>
-    )
+    label: <a href="/login">Login</a>,
   },
   {
     key: "2",
-    label: (
-      <a href="/register">Register</a>
-    )
+    label: <a href="/register">Register</a>,
   },
-]
-
+];
 
 const items = [
   {
@@ -68,6 +64,8 @@ const items = [
 const Header = () => {
   const [showDrawer, setShowDrawer] = useState(false);
 
+  const { cart } = useSelector((state) => state.product);
+
   return (
     <>
       <header className="w-full">
@@ -80,7 +78,9 @@ const Header = () => {
           </p>
         </div>
         <div className="bg-secondary px-16 py-4 justify-between items-center flex">
-          <Link className="text-white text-3xl font-semibold" to="/">Shopifity.</Link>
+          <Link className="text-white text-3xl font-semibold" to="/">
+            Shopifity.
+          </Link>
           <div className="w-2/5 bg-white flex justify-between items-center rounded-sm">
             <input
               type="text"
@@ -105,7 +105,7 @@ const Header = () => {
             </li>
             <Dropdown
               menu={{
-                items:account
+                items: account,
               }}
               placement="bottom"
               arrow
@@ -123,8 +123,13 @@ const Header = () => {
               <TiShoppingCart color="#c99608" size={40} />
               <Link onClick={() => setShowDrawer(true)}>
                 <div className=" ml-2">
-                  <span className="px-1 rounded-sm text-xs bg-white">0</span>
-                  <br /> <p className="text-white text-xs">{Naira.format(30.90)}</p>
+                  <span className="px-1 rounded-sm text-xs bg-white">
+                    {cart === null ? 0 : cart?.products.length}
+                  </span>
+                  <br />{" "}
+                  <p className="text-white text-xs">
+                    {cart !== null && Naira.format(cart?.cartTotal)}
+                  </p>
                 </div>
               </Link>
             </li>
