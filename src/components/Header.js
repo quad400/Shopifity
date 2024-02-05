@@ -65,7 +65,7 @@ const Header = () => {
   const [showDrawer, setShowDrawer] = useState(false);
 
   const { cart } = useSelector((state) => state.product);
-
+  const { isAuthenticated } = useSelector((state) => state.user);
   return (
     <>
       <header className="w-full">
@@ -110,14 +110,16 @@ const Header = () => {
               placement="bottom"
               arrow
             >
-              <li className="flex items-center justify-between">
-                <FaRegUser color="#c99608" size={30} />
-                <Link>
-                  <p className="text-white text-sm ml-2">
-                    Log in <br /> My Account
-                  </p>
-                </Link>
-              </li>
+              {/* {!isAuthenticated &&( */}
+                <li className="flex items-center justify-between">
+                  <FaRegUser color="#c99608" size={30} />
+                  <Link>
+                    <p className="text-white text-sm ml-2">
+                      Log in <br /> My Account
+                    </p>
+                  </Link>
+                </li>
+              {/* )}  */}
             </Dropdown>
             <li className="flex items-center justify-between">
               <TiShoppingCart color="#c99608" size={40} />

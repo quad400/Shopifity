@@ -1,7 +1,7 @@
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { Naira, calculateDiscount } from "../utils";
-import { AddtoWishlist } from "../features/productSlice";
+import { RemoveFromWishlist } from "../features/productSlice";
 import { useDispatch } from "react-redux";
 
 const WishlistCard = ({ item }) => {
@@ -12,7 +12,9 @@ const WishlistCard = ({ item }) => {
     <div className="w-[200px]">
       <div className="bg-white p-2 mb-3 shadow-lg rounded-md">
         <div className="flex justify-end items-start">
-          <MdClose onClick={() => dispatch(AddtoWishlist(item?._id))} />
+          <MdClose style={{
+            cursor: "pointer"
+          }} onClick={() => dispatch(RemoveFromWishlist(item?._id))} />
         </div>
         <div className="flex justify-center items-center">
           <img

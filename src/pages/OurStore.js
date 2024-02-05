@@ -34,20 +34,20 @@ const OurStore = () => {
 
   const [isFav, setIsFav] = useState(false);
 
-  useEffect(()=> {
-  if (wishlist.length === 0) {
-    return;
-  } else {
-    wishlist?.find((item) => {
-      if (item._id.toString() === item?._id.toString()) {
-        setIsFav(true);
-        console.log("caller")
-      } else {
-        setIsFav(false);
-      }
-    });
-  }
-  },[])
+  useEffect(() => {
+    if (wishlist.length === 0) {
+      return;
+    } else {
+      wishlist?.find((item) => {
+        if (item._id.toString() === item?._id.toString()) {
+          setIsFav(true);
+          console.log("caller");
+        } else {
+          setIsFav(false);
+        }
+      });
+    }
+  }, []);
 
   return (
     <div className="bg-white w-full h-full">
@@ -178,13 +178,16 @@ const OurStore = () => {
             } gap-2 mt-8`}
           >
             {products.map((item) => {
-              return(
-              isHorizontal ? (
-                <ProductHorizontalCard isFav={isFav} item={item} />
+              return isHorizontal ? (
+                <ProductHorizontalCard
+                  isFav={isFav}
+                  item={item}
+                  setIsFav={setIsFav}
+                />
               ) : (
                 <ProductCard2 item={item} />
-              )
-            )})}
+              );
+            })}
           </div>
 
           <div className="bg-white mt-6 shadow-lg flex justify-between p-1.5 rounded-md items-center">

@@ -3,9 +3,16 @@ import { Link } from "react-router-dom";
 import { Naira, calculateDiscount } from "../utils";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Rating } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AddtoWishlist } from "../features/productSlice";
 
-const ProductHorizontalCard = ({ item, isFav }) => {
+const ProductHorizontalCard = ({ item, isFav, setIsFav }) => {
+
+  const dispatch = useDispatch()
+function handleWishlist(id){
+  dispatch(AddtoWishlist(id))
+  setIsFav(!isFav)
+}
 
   return (
     <Link
@@ -20,7 +27,7 @@ const ProductHorizontalCard = ({ item, isFav }) => {
         ) : (
           <div></div>
         )}
-        <button className="float-end">
+        <button onClick={()=>handleWishlist(item?._id)} className="float-end">
           {isFav ? <FaHeart /> : <FaRegHeart />}
         </button>
       </div>

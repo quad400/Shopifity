@@ -156,14 +156,19 @@ export const AddtoWishlist = (id) => {
     try {
       const token = localStorage.getItem("token");
       console.log(token);
-      const response = await axios.put(`${BASE_URL}/user/wishlist/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.put(
+        `${BASE_URL}/user/wishlist/${id}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       message.success({
         content: "Product successfully added to wishlist",
       });
+      dispatch(productSlice.actions.wishlist(response?.data?.data?.wishlist));
       return response.data;
     } catch (error) {
       console.log(error.message);
@@ -179,14 +184,19 @@ export const RemoveFromWishlist = (id) => {
     try {
       const token = localStorage.getItem("token");
       console.log(token);
-      const response = await axios.put(`${BASE_URL}/user/wishlist/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.put(
+        `${BASE_URL}/user/wishlist/${id}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       message.success({
         content: "Product successfully remove from wishlist",
       });
+      dispatch(productSlice.actions.wishlist(response?.data?.data?.wishlist));
       return response.data;
     } catch (error) {
       console.log(error.message);
