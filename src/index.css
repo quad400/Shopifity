@@ -14,3 +14,42 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.ant-layout{
+  min-height: 100vh;
+}
+
+main{
+  overflow-y: scroll;
+}
+
+.ant-layout-sider{
+  flex: 0 0 250px !important;
+  max-width: 250px !important;
+  min-width: 250px !important;
+  width: 250px !important;
+}
+
+.ant-layout-sider-collapsed{
+  flex: 0 0 60px !important;
+  max-width: 60px !important;
+  min-width: 60px !important;
+  width: 60px !important;
+}
+
+.logo-small{
+  display: none;
+  transition: 0.3s;
+}
+
+.ant-layout-sider-collapsed .logo-small{
+  display: flex;
+}
+
+.ant-layout-sider-collapsed .logo-big{
+  display: none;
+}
+.logo-big{
+  display: flex;
+  transition: 0.3s;
+}

@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./features/userSlice";
-import { GetCart, GetWishlist } from "./features/productSlice";
+import { GetCart, GetWishlist, ProductCategories } from "./features/productSlice";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const Layout = () => {
     dispatch(fetchUser());
     dispatch(GetCart())
     dispatch(GetWishlist())
+    dispatch(ProductCategories())
 
   }
   }, [dispatch]);

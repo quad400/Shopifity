@@ -23,6 +23,7 @@ export const getAllProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "product",
   initialState: {
+    category: [],
     products: [],
     product: null,
     cart: null,
@@ -31,6 +32,9 @@ const productSlice = createSlice({
   reducers: {
     productList: (state, action) => {
       state.products = action.payload;
+    },
+    category: (state, action) => {
+      state.category = action.payload;
     },
     product: (state, action) => {
       state.product = action.payload;
@@ -47,6 +51,41 @@ const productSlice = createSlice({
 export default productSlice.reducer;
 
 export const ProductList = (page) => {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await axios.get(`${BASE_URL}/product/?page=${page}`);
+      dispatch(productSlice.actions.productList(data?.products));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const FilterByCategory = (id, page) => {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/product/?category=${id}&page=${page}`
+      );
+      dispatch(productSlice.actions.productList(data?.products));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const ProductCategories = (page) => {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await axios.get(`${BASE_URL}/category`);
+      dispatch(productSlice.actions.category(data));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const ProductListByCategory = (page, category) => {
   return async (dispatch, getState) => {
     try {
       const { data } = await axios.get(`${BASE_URL}/product/?page=${page}`);

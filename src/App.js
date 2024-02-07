@@ -14,6 +14,9 @@ import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import Product from "./pages/Product";
 import ForgotPassword from "./pages/ForgotPassword";
+import ProductCategory from "./pages/ProductCategory";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
 
 const App = () => {
   return (
@@ -28,12 +31,17 @@ const App = () => {
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="category/:id" element={<ProductCategory />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="blogs" element={<BlogList />} />
             <Route path="blogs/:id" element={<Blog />} />
             <Route path="contact" element={<Contact />} />
+          </Route>
+          <Route path="admin" element={<AdminLayout />}>
+            
+            <Route index element={<Dashboard />} />
           </Route>
         </Routes>
       </BrowserRouter>

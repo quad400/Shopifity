@@ -5,7 +5,7 @@ import { FaRegUser } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import { CgMenuGridR } from "react-icons/cg";
 import { MdArrowDropDown } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Drawer, Dropdown } from "antd";
 import DrawerContent from "./DrawerContent";
 import { Naira } from "../utils";
@@ -22,50 +22,23 @@ const account = [
   },
 ];
 
-const items = [
-  {
-    key: "1",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        1st menu item
-      </a>
-    ),
-  },
-  {
-    key: "2",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        2nd menu item
-      </a>
-    ),
-  },
-  {
-    key: "3",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.luohanacademy.com"
-      >
-        3rd menu item
-      </a>
-    ),
-  },
-];
+const items = ["Phones", "Laptops", "Watches", "Jwelries", "Bags", "Shoes"];
 
 const Header = () => {
   const [showDrawer, setShowDrawer] = useState(false);
-
-  const { cart } = useSelector((state) => state.product);
+  const [Search, setSearch] = useState("");
+  const { cart, category: categoryList } = useSelector(
+    (state) => state.product
+  );
   const { isAuthenticated } = useSelector((state) => state.user);
+
+  const navigate = useNavigate()
+
+  function handleFilterByCategory(category) {
+    console.log(category)
+    navigate(`/category/${category}`)
+  }
+
   return (
     <>
       <header className="w-full">
@@ -110,7 +83,9 @@ const Header = () => {
               placement="bottom"
               arrow
             >
-              {/* {!isAuthenticated &&( */}
+              {isAuthenticated ? (
+                <></>
+              ) : (
                 <li className="flex items-center justify-between">
                   <FaRegUser color="#c99608" size={30} />
                   <Link>
@@ -119,7 +94,7 @@ const Header = () => {
                     </p>
                   </Link>
                 </li>
-              {/* )}  */}
+              )}
             </Dropdown>
             <li className="flex items-center justify-between">
               <TiShoppingCart color="#c99608" size={40} />
@@ -135,12 +110,27 @@ const Header = () => {
                 </div>
               </Link>
             </li>
+            <NavLink to="admin" className="h-10 w-10 justify-center items-center rounded-full bg-tertiary">
+              <p className="text-2xl text-white text-center font-semibold">A</p>
+            </NavLink>
           </div>
         </div>
         <div className="flex bg-primary2 px-16 py-2 justify-start items-center">
           <Dropdown
+            // className="w-40"
+            align="center"
             menu={{
-              items,
+              items: categoryList?.map((item, index) => ({
+                key: index,
+                label: (
+                  <button
+                    className="capitalize w-full py-1"
+                    onClick={() => handleFilterByCategory(item?._id)}
+                  >
+                    {item?.title}
+                  </button>
+                ),
+              })),
             }}
             placement="bottom"
             arrow
